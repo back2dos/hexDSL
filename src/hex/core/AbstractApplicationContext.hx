@@ -15,13 +15,13 @@ import hex.log.ILogger;
  */
 class AbstractApplicationContext implements IApplicationContext
 {
+	var _injector				: IDependencyInjector;
 	var _name 					: String;
-	var _coreFactory 			: ICoreFactory;
 	var _domain 				: Domain;
 	
-	public function new( coreFactory : ICoreFactory, name : String ) 
+	public function new( injector, name : String ) 
 	{
-		this._coreFactory	= coreFactory;
+		this._injector  = injector;
 		this._name			= name;
 		this._domain		= Domain.getDomain( name );
 	}
@@ -35,20 +35,10 @@ class AbstractApplicationContext implements IApplicationContext
 	{
 		return this._domain;
 	}
-
-	public function dispatch( messageType : MessageType, ?data : Array<Dynamic> ) : Void
-	{
-		throw new VirtualMethodException();
-	}
-	
-	public function getCoreFactory() : ICoreFactory 
-	{
-		return this._coreFactory;
-	}
 	
 	public function getInjector() : IDependencyInjector 
 	{
-		return this._coreFactory.getInjector();
+		return this._injector;
 	}
 	
 	public function getLogger() : ILogger
